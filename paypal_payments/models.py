@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from dateutil import parser
 from django.db import models
 
 
@@ -32,8 +32,11 @@ class RecurringSubscription(models.Model):
     notify_version = models.CharField(null=True, blank=True, max_length=10)
     ipn_track_id = models.CharField(
         null=True, blank=True, max_length=20, db_index=True)
+    last_update = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        if self.time_created and isinstance(self.time_created, str):
+            self.time_created = parser.parse(self.time_created)
         if self.pk:
             orig = RecurringSubscription.objects.get(pk=self.pk)
             changed = []
