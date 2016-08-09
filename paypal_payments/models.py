@@ -30,4 +30,24 @@ class RecurringSubscription(models.Model):
     verify_sign = models.CharField(max_length=250)
     profile_status = models.CharField(max_length=25, db_index=True)
     notify_version = models.CharField(null=True, blank=True, max_length=10)
-    ipn_track_id = models.CharField(null=True, blank=True, max_length=20, db_index=True)
+    ipn_track_id = models.CharField(
+        null=True, blank=True, max_length=20, db_index=True)
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            orig = RecurringSubscription.objects.get(pk=self.pk)
+            changed = []
+            for field, value in sorted(orig.__dict__.items(), key=lambda x: x[0], reverse=True):
+                if field in ["_state", "history"]:
+                    continue
+                if getattr(self, field, None) != value:
+                    changed.append((field, value))
+            if changed:
+                self.history = self.history or ""
+                if self.history:
+                    self.history = "================\n%s" % self.history
+                for (field, val) in changed:
+                    if self.history:
+                        self.history = "\n%s" % self.history
+                    self.history = "%s  ->  %s%s" % (field, val, self.history)
+        super(RecurringSubscription, self).save(*args, **kwargs)
