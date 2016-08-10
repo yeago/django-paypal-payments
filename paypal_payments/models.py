@@ -35,7 +35,7 @@ class RecurringSubscription(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        if self.time_created and isinstance(self.time_created, str):
+        if self.time_created and type(self.time_created) in [unicode, str]:
             self.time_created = parser.parse(self.time_created)
         if self.pk:
             orig = RecurringSubscription.objects.get(pk=self.pk)
