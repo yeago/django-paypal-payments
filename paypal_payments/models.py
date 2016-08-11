@@ -6,7 +6,7 @@ from django.db import models
 class RecurringSubscription(models.Model):
     user = models.ForeignKey('auth.User', null=True, blank=True)
     recurring_payment_id = models.CharField(
-        max_length=25, db_index=True, unique=True)
+        max_length=25, db_index=True, unique=True, null=True, blank=True)
     initial_payment_amount = models.DecimalField(
         max_digits=7, decimal_places=2)
     amount = models.DecimalField(max_digits=7, decimal_places=2)
@@ -24,8 +24,11 @@ class RecurringSubscription(models.Model):
     last_name = models.CharField(max_length=25)
     payer_email = models.EmailField(max_length=255)
     receiver_email = models.EmailField(max_length=255)
+    receiver_id = models.CharField(max_length=255, null=True, blank=True)
     history = models.TextField()
     time_created = models.DateTimeField()
+    txn_id = models.CharField(max_length=250, null=True, blank=True)
+    subscr_id = models.CharField(max_length=250, null=True, blank=True)
     txn_type = models.CharField(max_length=250)
     verify_sign = models.CharField(max_length=250)
     profile_status = models.CharField(max_length=25, db_index=True)
