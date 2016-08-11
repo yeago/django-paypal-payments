@@ -32,7 +32,8 @@ class RecurringSubscription(models.Model):
     receiver_email = models.EmailField(max_length=255)
     receiver_id = models.CharField(max_length=255, null=True, blank=True)
     history = models.TextField(null=True, blank=True)
-    time_created = models.DateTimeField()
+    time_created = models.DateTimeField(null=True, blank=True)
+    payment_date = models.DateTimeField(null=True, blank=True)
     txn_id = models.CharField(max_length=250, null=True, blank=True)
     subscr_id = models.CharField(max_length=250, null=True, blank=True)
     txn_type = models.CharField(max_length=250)
@@ -44,6 +45,8 @@ class RecurringSubscription(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        if self.payment_date and type(self.payment_date) in [unicode, str]:
+            self.payment_date = parser.parse(self.payment_date)
         if self.time_created and type(self.time_created) in [unicode, str]:
             self.time_created = parser.parse(self.time_created)
         if self.pk:
