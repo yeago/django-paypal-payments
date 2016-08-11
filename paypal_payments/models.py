@@ -28,7 +28,7 @@ class RecurringSubscription(models.Model):
     payer_email = models.EmailField(max_length=255)
     receiver_email = models.EmailField(max_length=255)
     receiver_id = models.CharField(max_length=255, null=True, blank=True)
-    history = models.TextField()
+    history = models.TextField(null=True, blank=True)
     time_created = models.DateTimeField()
     txn_id = models.CharField(max_length=250, null=True, blank=True)
     subscr_id = models.CharField(max_length=250, null=True, blank=True)
