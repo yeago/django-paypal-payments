@@ -9,9 +9,11 @@ class RecurringSubscription(models.Model):
         max_length=25, db_index=True, unique=True, null=True, blank=True)
     initial_payment_amount = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
-    amount = models.DecimalField(max_digits=7, decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=7, decimal_places=2, null=True, blank=True)
     tax = models.DecimalField(max_digits=7, decimal_places=2)
-    shipping = models.DecimalField(max_digits=7, decimal_places=2)
+    shipping = models.DecimalField(
+        null=True, blank=True, max_digits=7, decimal_places=2)
     outstanding_balance = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
     amount_per_cycle = models.DecimalField(max_digits=7, decimal_places=2)
