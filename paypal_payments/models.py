@@ -11,7 +11,8 @@ class RecurringSubscription(models.Model):
         max_digits=7, decimal_places=2, null=True, blank=True)
     amount = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
-    tax = models.DecimalField(max_digits=7, decimal_places=2)
+    tax = models.DecimalField(
+        null=True, blank=True, max_digits=7, decimal_places=2)
     shipping = models.DecimalField(
         null=True, blank=True, max_digits=7, decimal_places=2)
     outstanding_balance = models.DecimalField(
