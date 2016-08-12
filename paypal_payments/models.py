@@ -41,7 +41,7 @@ class RecurringSubscription(models.Model):
     profile_status = models.CharField(max_length=25, db_index=True)
     notify_version = models.CharField(null=True, blank=True, max_length=10)
     ipn_track_id = models.CharField(
-        null=True, blank=True, max_length=20, db_index=True)
+        null=True, blank=True, max_length=55, db_index=True)
     last_update = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
