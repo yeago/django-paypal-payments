@@ -1,10 +1,10 @@
 from django.test import TestCase
-from paypal_payments.models import RecurringSubscription
+from paypal_payments.models import SubscriptionProfile
 
 
 class RecurringPaymentTestCase(TestCase):
     def test_history(self):
-        instance = RecurringSubscription.objects.create(
+        instance = SubscriptionProfile.objects.create(
             recurring_payment_id="blah",
             initial_payment_amount=2.99,
             amount=2.99,
@@ -30,7 +30,7 @@ class RecurringPaymentTestCase(TestCase):
             ipn_track_id="blah",
         )
         last_update = str(instance.last_update).split(".")[0]
-        instance = RecurringSubscription.objects.get(
+        instance = SubscriptionProfile.objects.get(
             recurring_payment_id="blah")
         instance.first_name = "blah2"
         instance.profile_status = "blah2"

@@ -3,7 +3,7 @@ from dateutil import parser
 from django.db import models
 
 
-class RecurringSubscription(models.Model):
+class TxnSubscriptionBase(models.Model):
     user = models.ForeignKey('auth.User', null=True, blank=True)
     recurring_payment_id = models.CharField(
         max_length=25, db_index=True, unique=True, null=True, blank=True)
@@ -44,13 +44,16 @@ class RecurringSubscription(models.Model):
         null=True, blank=True, max_length=55, db_index=True)
     last_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
     def save(self, *args, **kwargs):
         if self.payment_date and type(self.payment_date) in [unicode, str]:
             self.payment_date = parser.parse(self.payment_date)
         if self.time_created and type(self.time_created) in [unicode, str]:
             self.time_created = parser.parse(self.time_created)
         if self.pk:
-            orig = RecurringSubscription.objects.get(pk=self.pk)
+            orig = self.__class__.objects.get(pk=self.pk)
             changed = []
             for field, value in sorted(orig.__dict__.items(), key=lambda x: x[0], reverse=True):
                 if field in ["_state", "history"]:
@@ -65,4 +68,12 @@ class RecurringSubscription(models.Model):
                     if self.history:
                         self.history = "\n%s" % self.history
                     self.history = "%s  ->  %s%s" % (field, val, self.history)
-        super(RecurringSubscription, self).save(*args, **kwargs)
+        super(TxnSubscriptionBase, self).save(*args, **kwargs)
+
+
+class SubscriptionTxn(TxnSubscriptionBase):
+    pass
+
+
+class SubscriptionProfile(TxnSubscriptionBase):
+    pass
