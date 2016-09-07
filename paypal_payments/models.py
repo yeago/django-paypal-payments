@@ -43,6 +43,7 @@ class TxnSubscriptionBase(models.Model):
     ipn_track_id = models.CharField(
         null=True, blank=True, max_length=55, db_index=True)
     last_update = models.DateTimeField(auto_now=True)
+    payload = models.TextField(null=True, blank=True)
 
     class Meta:
         abstract = True
