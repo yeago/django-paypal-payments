@@ -73,7 +73,7 @@ class TxnSubscriptionBase(models.Model):
 
 
 class SubscriptionTxn(TxnSubscriptionBase):
-    pass
+    profile = models.ForeignKey('SubscriptionProfile', null=True, blank=True)
 
 
 class SubscriptionProfile(TxnSubscriptionBase):
