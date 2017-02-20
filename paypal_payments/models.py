@@ -58,7 +58,10 @@ class TxnSubscriptionBase(models.Model):
             for field, value in sorted(orig.__dict__.items(), key=lambda x: x[0], reverse=True):
                 if field in ["_state", "history"]:
                     continue
-                if getattr(self, field, None) != value:
+                old = getattr(self, field, None)
+                if old != value:
+                    if old and not value:
+                        continue
                     changed.append((field, value))
             if changed:
                 self.history = self.history or ""
