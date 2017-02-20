@@ -35,7 +35,6 @@ class TxnSubscriptionBase(models.Model):
     time_created = models.DateTimeField(null=True, blank=True)
     payment_date = models.DateTimeField(null=True, blank=True)
     txn_id = models.CharField(max_length=250, null=True, blank=True)
-    subscr_id = models.CharField(max_length=250, null=True, blank=True)
     txn_type = models.CharField(max_length=250)
     verify_sign = models.CharField(max_length=250)
     profile_status = models.CharField(max_length=25, db_index=True)
@@ -74,7 +73,8 @@ class TxnSubscriptionBase(models.Model):
 
 class SubscriptionTxn(TxnSubscriptionBase):
     profile = models.ForeignKey('SubscriptionProfile', null=True, blank=True)
+    subscr_id = models.CharField(max_length=250, null=True, blank=True)
 
 
 class SubscriptionProfile(TxnSubscriptionBase):
-    pass
+    subscr_id = models.CharField(max_length=250, null=True, blank=True, unique=True)
